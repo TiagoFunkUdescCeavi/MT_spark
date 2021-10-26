@@ -1,5 +1,4 @@
-from Instance_Reader import *
-from Solution import Solution
+from InstanceReader import *
 from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
 from GRASP import GRASP
 
