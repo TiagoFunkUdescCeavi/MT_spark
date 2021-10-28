@@ -58,7 +58,7 @@ class Solution:
     def remove_in_path( self, path, position ):
         v = self.paths[ path ][ position ]
         self.used_vertices.remove( v )
-        self.paths[ path ].remove( self.paths[ path ].begin() + position )
+        self.paths[ path ].remove( v )
 
     def calculate_time_in_add( self, path, position, v ):
         previous = self.paths[ path ][ position-1 ]
@@ -89,7 +89,7 @@ class Solution:
     
     def recalculate_time( self, path ):
         sum = 0.0
-        for i in range( self.paths[ path ] ):
+        for i in range( len( self.paths[ path ] ) ):
             sum += calculate_distance( self.paths[ path ][ i ], self.paths[ path ][ i+1 ] )
         return sum
     
@@ -279,6 +279,17 @@ class Solution:
     
     def get_number_paths( self ):
         return len( self.paths )
+
+    def get_length_of_path( self, path ):
+        if self.check_if_path_is_valid( path ):
+            return -1
+        return len( self.paths[ path ] )
+    
+    def get_total_length_of_path( self ):
+        sum = 0
+        for i in range( len( self.paths ) ):
+            sum += len( self.paths[ i ] ) - 2
+        return sum
     
     def to_string( self ):
         s = "number paths: " + str( len( self.paths ) ) + "\n"

@@ -110,7 +110,6 @@ class RandomGreedyGen_MinMax:
                 if sol.add( i, selected_vertice ):
                     is_added = True
                     self.unused_vertices.remove( selected_vertice )
-                    print("adicionou")
         
         return sol
     

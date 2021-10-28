@@ -14,3 +14,9 @@ def find_min_max( values ):
         elif max < values[ i ]:
             max = values[ i ]
     return min, max
+
+def truncate( value, decimals ):
+    for i in range( decimals ):
+        value *= 10
+    result = int( value )
+    return result
