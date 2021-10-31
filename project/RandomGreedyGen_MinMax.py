@@ -1,16 +1,17 @@
 from Solution import Solution
 from ScorePoint import ScorePoint
-from Instance import Instance
 from Utils import calculate_distance, find_min_max
 from random import random
+from math import pow, sqrt
 
 class RandomGreedyGen_MinMax:
-    def __init__( self, alpha, margin, number_paths, time_per_path, instance ):
+    def __init__( self, alpha, margin, number_paths, time_per_path, instance, spark_context ):
         self.alpha = alpha
         self.margin = margin
         self.number_paths = number_paths
         self.time_per_path = time_per_path
         self.instance = instance
+        self.spark_context = spark_context
         self.unused_vertices = []
 
     def initialize_solution( self, number_paths, time_per_path, initial_vertice, final_vertice ):
@@ -43,11 +44,21 @@ class RandomGreedyGen_MinMax:
         if n_vertices == 0:
             return score_points
         
+        values = []
+        
         for v in vertices:
             s = ScorePoint()
             s.p = v
-            s.distance = calculate_distance( actual_vertice, v )
+            values.append( (actual_vertice.get_x(), actual_vertice.get_y(), v.get_x(), v.get_y() ) )
             score_points.append( s )
+        
+        rdd = self.spark_context.parallelize( values )
+        rdd = rdd.map( lambda x: ( sqrt( pow( x[2]-x[0], 2 ) + pow( x[3]-x[1], 2 ) ) ) )
+        l = rdd.collect()
+        
+        for i in range( len( score_points ) ):
+            s.distance = l[ i ]
+        
         
         min_reward, max_reward = find_min_max( self.get_scores( vertices ) )
         min_distance, max_distance = find_min_max( self.get_distances( score_points ) )

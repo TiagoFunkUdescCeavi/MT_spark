@@ -7,11 +7,13 @@ from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
 from GRASP import GRASP
 from LocalSearch import LocalSearch
 from PathRelinking import PathRelinking
+from pyspark import SparkContext, SparkConf
 
 class App:
 
     def __init__( self, argument_reader ) -> None:
         self.argument_reader = argument_reader
+        self.spark_context = None
     
     def create_remove_operator( self ):
         argument = self.argument_reader.getValue( "--removeOperator" )
@@ -34,6 +36,11 @@ class App:
     
     def create_swap_operator( self ):
         return BestSwapOperator()
+
+    def initialize_spark( self ):
+        spark_conf = SparkConf().setAppName("YourTest").setMaster("local[*]")
+        spark_context = SparkContext.getOrCreate(spark_conf)
+        self.spark_context = spark_context
     
     def initialize_timer( self ):
         pass
@@ -52,7 +59,7 @@ class App:
     def create_solution_generator( self, instance ):
         alpha = float( self.argument_reader.getValue( "--alpha" ) )
         margin = float( self.argument_reader.getValue( "--margin" ) )
-        return RandomGreedyGen_MinMax( alpha, margin, instance.get_number_paths(), instance.get_time_per_path(), instance )
+        return RandomGreedyGen_MinMax( alpha, margin, instance.get_number_paths(), instance.get_time_per_path(), instance, self.spark_context )
     
     def create_operators( self ):
         operators = []
@@ -83,6 +90,7 @@ class App:
         print( str( time ) + " ms" )
     
     def execute( self ):
+        self.initialize_spark()
         self.initialize_timer()
         solution = self.create_and_execute_grasp()
         time = self.finalize_timer()
