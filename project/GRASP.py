@@ -40,7 +40,6 @@ class GRASP:
         seed( self.seed )
 
         for i in range( self.iterations ):
-            print( i )
             actual_solution = self.generate()
 
             if not self.is_accepted( actual_solution ):

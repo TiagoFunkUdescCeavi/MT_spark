@@ -1,6 +1,7 @@
 from RandomRemoveOperator import RandomRemoveOperator
 from ExchangeOperator import ExchangeOperator
 from BestAddOperator import BestAddOperator
+from BestSwapOperator import BestSwapOperator
 from InstanceReader import read
 from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
 from LocalSearch import LocalSearch
@@ -30,6 +31,9 @@ class App:
             return BestAddOperator()
         raise Exception( "Create Operator is invalid: " + argument )
     
+    def create_swap_operator( self ):
+        return BestSwapOperator()
+    
     def initialize_timer( self ):
         pass
 
@@ -54,6 +58,7 @@ class App:
         operators.append( self.create_remove_operator() )
         operators.append( self.create_shuffle_operator() )
         operators.append( self.create_add_operator() )
+        operators.append( self.create_swap_operator() )
         return operators
 
     def create_local_search( self ):
