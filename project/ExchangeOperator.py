@@ -1,5 +1,3 @@
-from Utils import truncate
-
 class ExchangeOperator:
     def __init__(self) -> None:
         self.is_swaped = False
@@ -9,12 +7,12 @@ class ExchangeOperator:
         self.is_swaped = False
         actual_solution = solution
         best_solution = solution
-        for i in range( actual_solution.get_number_paths() ):
-            for j in range( i+1, actual_solution.get_number_paths() ):
-                for k in range( 1, actual_solution.get_length_of_path( i )-1 ):
-                    for l in range( 1, actual_solution.get_length_of_path( i )-1 ):
-                        if actual_solution.swap( i,k,j,l ):
-                            if truncate( actual_solution.get_total_time(), 2 ) < truncate( best_solution.get_total_time(), 2 ):
+        for path1 in range( actual_solution.get_number_paths() ):
+            for path2 in range( path1+1, actual_solution.get_number_paths() ):
+                for position1 in range( 1, actual_solution.get_length_of_path( path1 )-1 ):
+                    for position2 in range( 1, actual_solution.get_length_of_path( path2 )-1 ):
+                        if actual_solution.swap( path1, position1, path2, position2 ):
+                            if actual_solution.get_total_time() < best_solution.get_total_time():
                                 best_solution = actual_solution
                                 self.is_swaped = True
                             else:

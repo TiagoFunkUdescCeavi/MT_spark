@@ -14,7 +14,6 @@ class Solution:
         self.time_per_path = time_per_path
         self.total_rewards = 0.0
         self.total_time = 0.0
-        self.used_vertices = []
 
     def update_time_per_path( self, time_per_path: float ):
         self.time_per_path = time_per_path
@@ -43,11 +42,9 @@ class Solution:
 
     def __add_in_path( self, path: int, position: int, vertice: Vertice ):
         self.paths[ path ].insert( position, vertice )
-        self.used_vertices.append( vertice )
     
     def __remove_in_path( self, path: int, position: int ):
         v = self.paths[ path ][ position ]
-        self.used_vertices.remove( v )
         self.paths[ path ].remove( v )
 
     def __calculate_time_in_add( self, path: int, position: int, v: Vertice ):
@@ -83,10 +80,11 @@ class Solution:
             sum += calculate_distance( self.paths[ path ][ i ], self.paths[ path ][ i+1 ] )
         return sum
     
-    def __check_if_vertice_is_used( self, vertice: Vertice ):
-        for v in self.used_vertices:
-            if vertice.equals( v ):
-                return True
+    def __check_if_vertice_is_used( self, vertice_for_check: Vertice ):
+        for path in self.paths:
+            for vertice in path:
+                if vertice_for_check.equals( vertice ):
+                    return True
         return False
     
     def __check_if_path_is_valid( self, path: int ):
@@ -178,7 +176,7 @@ class Solution:
         self.__check_if_path_and_position_is_valid( path2, position2 )
         if( self.__check_if_position_is_initial_vertice( position1 ) or self.__check_if_position_is_final_vertice( path1, position1 ) ):
             raise Exception("do not swap initial or final vertice")
-        if( self.__check_if_position_is_initial_vertice( position2 ) ):
+        if( self.__check_if_position_is_initial_vertice( position2 ) or self.__check_if_position_is_final_vertice( path2, position2 )):
             raise Exception("do not swap initial or final vertice")
 
         reward_1 = self.paths[ path1 ][ position1 ].get_reward()

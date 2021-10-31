@@ -1,10 +1,7 @@
-from Solution import Solution
-from Utils import truncate
-
 class LocalSearch:
     def __init__( self, operators ) -> None:
         if len( operators ) == 0:
-            raise Exception("operator list of local search is empty")
+            raise Exception("operator's list of local search is empty")
         self.operators = operators
         self.unused_vertices = []
     
@@ -14,18 +11,18 @@ class LocalSearch:
     def is_bigger( self, sol ):
         result = False
         for i in range( sol.get_number_paths() ) :
-            result = result or truncate( sol.get_time_path( i ), 2 ) > truncate( sol.get_time_per_path(), 2 )
+            result = result or sol.get_time_path( i ) > sol.get_time_per_path()
         return result
     
     def is_shorter( self, actual_solution, best_solution ):
         result = best_solution.get_total_rewards() == actual_solution.get_total_rewards()
-        result = result and truncate( actual_solution.get_total_time(), 2 ) < truncate( best_solution.get_total_rewards(), 2 )
+        result = result and actual_solution.get_total_time() < best_solution.get_total_time()
         return result
     
-    def execute( self, sol, vertices ):
+    def execute( self, solution, vertices ):
         is_moved = True
-        best_solution = sol
-        actual_solution = sol
+        best_solution = solution
+        actual_solution = solution
         self.unused_vertices = vertices
 
         while is_moved:

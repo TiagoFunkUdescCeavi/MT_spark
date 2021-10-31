@@ -8,7 +8,7 @@ class RandomRemoveOperator:
     def random_path( self, solution ):
         numbers = []
         for i in range( solution.get_number_paths() ):
-            if solution.is_empty( i ):
+            if not solution.is_empty( i ):
                 numbers.append( i )
         
         for i in range( len( numbers ) ):

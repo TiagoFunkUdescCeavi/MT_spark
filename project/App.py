@@ -35,13 +35,13 @@ class App:
 
     def create_seed( self ):
         seed = int( self.argument_reader.getValue( "--seed" ) )
-        print( "seed: " + str( seed ) + "\n" )
+        print( "seed: " + str( seed ) )
         return seed
     
     def read_instance( self ):
         file = self.argument_reader.getValue( "--file" )
         instance = read( file  )
-        print( "file: " + file + "\n" )
+        print( "file: " + file )
         return instance
 
     def create_solution_generator( self, instance ):
@@ -70,8 +70,8 @@ class App:
     
     def show_results( self, solution, time ):
         print( solution.to_string() )
-        print( str( solution.get_total_rewards() ) + "\n" )
-        print( str( time ) + " ms\n" )
+        print( str( solution.get_total_rewards() ) )
+        print( str( time ) + " ms" )
     
     def execute( self ):
         self.initialize_timer()

@@ -9,9 +9,9 @@ class BestAddOperator:
         best_solution = solution
         actual_solution = solution
         for i in range( solution.get_number_paths() ):
-            for j in range( solution.get_length_of_path( i )-1 ):
+            for j in range( 1, solution.get_length_of_path( i )-1 ):
                 for k in range( len( self.unused_vertices ) ):
-                    if actual_solution.add_in_path( i,j, self.unused_vertices[ k ] ):
+                    if actual_solution.add_in_position( i,j, self.unused_vertices[ k ] ):
                         if best_solution.get_total_rewards() < actual_solution.get_total_rewards():
                             self.is_added = True
                             vertice_position = k
@@ -25,7 +25,7 @@ class BestAddOperator:
         return best_solution
     
     def execute( self, solution, unused_vertices ):
-        self.unused_vertices = unused_vertices #shuffle_vertices( uv )
+        self.unused_vertices = unused_vertices
         while True:
             solution = self.realize_add( solution )
             if not self.is_added:

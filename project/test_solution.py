@@ -84,6 +84,24 @@ class test_solution( unittest.TestCase ):
         self.assertRaises( Exception, sol.add, 1, None )
         self.assertAlmostEqual( sol.add( 1, new_vertice ), False )
     
+    def test_add_with_repeated_vertice( self ):
+        initial = Vertice( 0.0, 0.0, 0 )
+        final = Vertice ( 3.0, 4.0, 0 )
+        new_vertice = Vertice( 6.0, 8.0, 5 )
+        other_vertice = Vertice( 1.0, 2.0, 5.0 )
+        sol = Solution( 2, 25.0 )
+
+        for i in range( 2 ):
+            sol.add_initial_and_final_vertices( i, initial, final )
+        
+        self.assertAlmostEqual( sol.add( 0, new_vertice ), True )
+
+        self.assertAlmostEqual( sol.add( 0, new_vertice ), False )
+        self.assertAlmostEqual( sol.add( 1, new_vertice ), False )
+
+        self.assertAlmostEqual( sol.add( 0, other_vertice), True )
+
+    
     def test_move( self ):
         initial = Vertice( 1.0, 1.0, 0 )
         final = Vertice( 2.0, 2.0, 0 )
@@ -237,8 +255,9 @@ class test_solution( unittest.TestCase ):
         sol.add( 1, v3 )
         sol.add( 1, v4 )
         
-        self.assertRaises( Exception, sol.move, 1, 0, 0, 3 )
-        self.assertRaises( Exception, sol.move, 1, -2, 0, 3 )
+        self.assertRaises( Exception, sol.swap, 1, 2, 0, 3 )
+        self.assertRaises( Exception, sol.swap, 1, 0, 0, 3 )
+        self.assertRaises( Exception, sol.swap, 1, -2, 0, 3 )
     
     def test_swap_before_final_vertice( self ):
         initial = Vertice( 1.0, 1.0, 0 )
@@ -251,4 +270,4 @@ class test_solution( unittest.TestCase ):
         
         sol.add( 0, v1 )
         
-        self.assertAlmostEqual( sol.swap( 0, 1, 1, 1 ), True )
+        self.assertRaises( Exception, sol.swap, 0, 1, 1, 1 )

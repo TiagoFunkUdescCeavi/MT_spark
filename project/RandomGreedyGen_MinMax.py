@@ -97,7 +97,7 @@ class RandomGreedyGen_MinMax:
     def generate( self, vertices ):
         is_added = True
         sol = self.initialize_solution( self.number_paths, self.time_per_path, self.instance.get_initial_vertice(), self.instance.get_final_vertice() )
-        sol.update_time_per_path( 1.0 * sol.get_time_per_path() )
+        sol.update_time_per_path( self.margin * sol.get_time_per_path() )
         self.unused_vertices = vertices
 
         while is_added:

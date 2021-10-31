@@ -1,5 +1,5 @@
 from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
-from Solution import Solution
+from random import seed
 
 class GRASP:
     def __init__( self, iterations, seed, generator, local_search, instance ) -> None:
@@ -37,11 +37,11 @@ class GRASP:
     def execute( self ):
         actual_solution = None
         best_solution = None
-        #set seed on rng
+        seed( self.seed )
 
         for i in range( self.iterations ):
+            print( i )
             actual_solution = self.generate()
-            a = actual_solution.get_total_rewards()
 
             if not self.is_accepted( actual_solution ):
                 continue
@@ -50,7 +50,7 @@ class GRASP:
 
             if self.is_better( actual_solution, best_solution):
                 best_solution = actual_solution
-                print( str( i+1 ) + " " + str( best_solution.get_total_rewards() ) + "\n")
+                print( str( i+1 ) + " " + str( best_solution.get_total_rewards() ) )
         
         return best_solution
 
