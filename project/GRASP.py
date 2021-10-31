@@ -2,11 +2,12 @@ from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
 from random import seed
 
 class GRASP:
-    def __init__( self, iterations, seed, generator, local_search, instance ) -> None:
+    def __init__( self, iterations, seed, generator, local_search, path_relinking, instance ) -> None:
         self.iterations = iterations
         self.seed = seed
         self.generator = generator
         self.local_search = local_search
+        self.path_relining = path_relinking
         self.instance = instance
         self.unused_vertices = []
     
@@ -21,6 +22,11 @@ class GRASP:
         actual_solution = self.local_search.execute( solution, self.unused_vertices )
         self.unused_vertices = self.local_search.get_unused_vertices()
         return actual_solution
+    
+    def apply_path_relinking( self, solution, best_solution ):
+        if best_solution == None or best_solution.get_total_time() == 0.0:
+            return solution
+        return self.path_relining.execute( solution, best_solution )
     
     def is_accepted( self, sol ):
         return True
@@ -46,6 +52,8 @@ class GRASP:
                 continue
             
             actual_solution = self.apply_local_search( actual_solution )
+
+            actual_solution = self.apply_path_relinking( actual_solution, best_solution )
 
             if self.is_better( actual_solution, best_solution):
                 best_solution = actual_solution

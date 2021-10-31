@@ -4,8 +4,9 @@ from BestAddOperator import BestAddOperator
 from BestSwapOperator import BestSwapOperator
 from InstanceReader import read
 from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
-from LocalSearch import LocalSearch
 from GRASP import GRASP
+from LocalSearch import LocalSearch
+from PathRelinking import PathRelinking
 
 class App:
 
@@ -64,10 +65,13 @@ class App:
     def create_local_search( self ):
         return LocalSearch( self.create_operators() )
     
+    def create_path_relinking( self ):
+        return PathRelinking( True )
+    
     def create_and_execute_grasp( self ):
         iterations = int( self.argument_reader.getValue("--iterations") )
         instance = self.read_instance()
-        grasp = GRASP( iterations, self.create_seed(), self.create_solution_generator( instance ), self.create_local_search(), instance )
+        grasp = GRASP( iterations, self.create_seed(), self.create_solution_generator( instance ), self.create_local_search(), self.create_path_relinking(), instance )
         return grasp.execute()
     
     def finalize_timer( self ):
