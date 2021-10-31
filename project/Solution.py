@@ -16,7 +16,7 @@ class Solution:
         self.total_time = 0.0
         self.used_vertices = []
 
-    def __update_time_per_path( self, time_per_path: float ):
+    def update_time_per_path( self, time_per_path: float ):
         self.time_per_path = time_per_path
 
     def __update_reward_in_add( self, path: int, vertice: Vertice ):
@@ -98,9 +98,12 @@ class Solution:
         if position < 1 or position >= len( self.paths[ path ] ):
             raise Exception("index of position is invalid")
     
-    def __check_if_position_is_initial_or_final( self, path: int, position: int ):
+    def __check_if_position_is_initial_vertice( self, position: int ):
+        return position == 0
+
+    def __check_if_position_is_final_vertice( self, path: int, position: int ):
         size = len( self.paths[ path ] ) -1
-        return position == 0 or position == size
+        return position == size
 
     def add_initial_and_final_vertices( self, path: int, initial_vertice: Vertice, final_vertice: Vertice ):
         self.__check_if_path_is_valid( path )
@@ -170,20 +173,20 @@ class Solution:
             self.paths[ path ][ pos2 ] = v
             return False
     
-    def swap( self, path1, pos1, path2, pos2 ):
-        self.__check_if_path_and_position_is_valid( path1, pos1 )
-        self.__check_if_path_and_position_is_valid( path2, pos2 )
-        if( self.__check_if_position_is_initial_or_final( path1, pos1 ) ):
+    def swap( self, path1, position1, path2, position2 ):
+        self.__check_if_path_and_position_is_valid( path1, position1 )
+        self.__check_if_path_and_position_is_valid( path2, position2 )
+        if( self.__check_if_position_is_initial_vertice( position1 ) or self.__check_if_position_is_final_vertice( path1, position1 ) ):
             raise Exception("do not swap initial or final vertice")
-        if( self.__check_if_position_is_initial_or_final( path2, pos2 ) ):
+        if( self.__check_if_position_is_initial_vertice( position2 ) ):
             raise Exception("do not swap initial or final vertice")
 
-        reward_1 = self.paths[ path1 ][ pos1 ].get_reward()
-        reward_2 = self.paths[ path2 ][ pos2 ].get_reward()
+        reward_1 = self.paths[ path1 ][ position1 ].get_reward()
+        reward_2 = self.paths[ path2 ][ position2 ].get_reward()
 
-        v = self.paths[ path1 ][ pos1 ]
-        self.paths[ path1 ][ pos1 ] = self.paths[ path2 ][ pos2 ]
-        self.paths[ path2 ][ pos2 ] = v
+        v = self.paths[ path1 ][ position1 ]
+        self.paths[ path1 ][ position1 ] = self.paths[ path2 ][ position2 ]
+        self.paths[ path2 ][ position2 ] = v
 
         new_time_path_1 = self.__recalculate_time( path1 )
         new_time_path_2 = self.__recalculate_time( path2 )
@@ -195,9 +198,9 @@ class Solution:
             self.path_rewards[ path2 ] += reward_1 - reward_2
             return True
         else:
-            v = self.paths[ path1 ][ pos1 ]
-            self.paths[ path1 ][ pos1 ] = self.paths[ path2 ][ pos2 ]
-            self.paths[ path2 ][ pos2 ] = v
+            v = self.paths[ path1 ][ position1 ]
+            self.paths[ path1 ][ position1 ] = self.paths[ path2 ][ position2 ]
+            self.paths[ path2 ][ position2 ] = v
             return False
 
     def remove( self, path, position ):

@@ -236,7 +236,19 @@ class test_solution( unittest.TestCase ):
         sol.add( 0, v2 )
         sol.add( 1, v3 )
         sol.add( 1, v4 )
-
-        self.assertRaises( Exception, sol.swap, 1, 2, 0, 3 )
+        
         self.assertRaises( Exception, sol.move, 1, 0, 0, 3 )
         self.assertRaises( Exception, sol.move, 1, -2, 0, 3 )
+    
+    def test_swap_before_final_vertice( self ):
+        initial = Vertice( 1.0, 1.0, 0 )
+        final = Vertice( 2.0, 2.0, 0 )
+        v1 = Vertice( 2.3, 4.5, 1 )
+        sol = Solution( 2, 7.0 )
+
+        for i in range( 2 ):
+            sol.add_initial_and_final_vertices( i, initial, final )
+        
+        sol.add( 0, v1 )
+        
+        self.assertAlmostEqual( sol.swap( 0, 1, 1, 1 ), True )
