@@ -1,5 +1,3 @@
-from Vertice import *
-
 class ScorePoint:
     def __init__(self) -> None:
         self.vertice = None
