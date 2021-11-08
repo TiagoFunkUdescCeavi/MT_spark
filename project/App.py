@@ -80,9 +80,9 @@ class App:
         return time.time() - self.time
     
     def show_results( self, solution, time ):
-        print( solution.to_string() )
+        #print( solution.to_string() )
         print( str( solution.get_total_rewards() ) )
-        print( str( time ) + " s" )
+        print( str( time ) )
     
     def execute( self ):
         self.initialize_timer()
