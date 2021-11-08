@@ -4,7 +4,7 @@ from BestAddOperator import BestAddOperator
 from BestSwapOperator import BestSwapOperator
 from InstanceReader import read
 from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
-from GRASP import GRASP
+from ParallelGRASP import ParallelGRASP
 from LocalSearch import LocalSearch
 from PathRelinking import PathRelinking
 
@@ -71,7 +71,7 @@ class App:
     def create_and_execute_grasp( self ):
         iterations = int( self.argument_reader.getValue("--iterations") )
         instance = self.read_instance()
-        grasp = GRASP( iterations, self.create_seed(), self.create_solution_generator( instance ), self.create_local_search(), self.create_path_relinking(), instance )
+        grasp = ParallelGRASP( iterations, self.create_seed(), self.create_solution_generator( instance ), self.create_local_search(), self.create_path_relinking(), instance )
         return grasp.execute()
     
     def finalize_timer( self ):

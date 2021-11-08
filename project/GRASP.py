@@ -1,8 +1,9 @@
-from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
 from random import seed
+from multiprocessing import Process
 
-class GRASP:
-    def __init__( self, iterations, seed, generator, local_search, path_relinking, instance ) -> None:
+class GRASP( Process ):
+    def __init__( self, iterations, seed, generator, local_search, path_relinking, instance, id, dict ) -> None:
+        super( GRASP, self ).__init__()
         self.iterations = iterations
         self.seed = seed
         self.generator = generator
@@ -10,6 +11,8 @@ class GRASP:
         self.path_relining = path_relinking
         self.instance = instance
         self.unused_vertices = []
+        self.id = id
+        self.dict = dict
     
     def generate( self ):
         self.unused_vertices.clear()
@@ -40,7 +43,7 @@ class GRASP:
             return True
         return actual_solution.get_total_rewards() > best_solution.get_total_rewards()
     
-    def execute( self ):
+    def run( self ):
         actual_solution = None
         best_solution = None
         seed( self.seed )
@@ -57,9 +60,8 @@ class GRASP:
 
             if self.is_better( actual_solution, best_solution):
                 best_solution = actual_solution
-                print( str( i+1 ) + " " + str( best_solution.get_total_rewards() ) )
         
-        return best_solution
+        self.dict[ self.id ] = best_solution
 
 
 
