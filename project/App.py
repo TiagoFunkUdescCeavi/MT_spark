@@ -7,11 +7,13 @@ from RandomGreedyGen_MinMax import RandomGreedyGen_MinMax
 from GRASP import GRASP
 from LocalSearch import LocalSearch
 from PathRelinking import PathRelinking
+import time
 
 class App:
 
     def __init__( self, argument_reader ) -> None:
         self.argument_reader = argument_reader
+        self.time = 0
     
     def create_remove_operator( self ):
         argument = self.argument_reader.getValue( "--removeOperator" )
@@ -36,7 +38,7 @@ class App:
         return BestSwapOperator()
     
     def initialize_timer( self ):
-        pass
+        self.time = time.time()
 
     def create_seed( self ):
         seed = int( self.argument_reader.getValue( "--seed" ) )
@@ -75,12 +77,12 @@ class App:
         return grasp.execute()
     
     def finalize_timer( self ):
-        return 0
+        return time.time() - self.time
     
     def show_results( self, solution, time ):
         print( solution.to_string() )
         print( str( solution.get_total_rewards() ) )
-        print( str( time ) + " ms" )
+        print( str( time ) + " s" )
     
     def execute( self ):
         self.initialize_timer()
