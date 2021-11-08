@@ -1,5 +1,6 @@
 from multiprocessing import Manager, cpu_count
 from GRASP import GRASP
+from random import randint, seed
 
 class ParallelGRASP:
     def __init__(self, iterations, seed, generator, local_search, path_relinking, instance ) -> None:
@@ -14,8 +15,12 @@ class ParallelGRASP:
         self.dict = Manager().dict()
     
     def __create_grasps( self ):
+        seed( self.seed )
+        seeds = []
         for i in range( self.number_of_cpus ):
-            g = GRASP( self.iterations, self.seed, self.generator, self.local_search, self.path_relining, self.instance, i, self.dict )
+            seeds.append( randint( 0, 100000000000000 ) )
+        for i in range( self.number_of_cpus ):
+            g = GRASP( self.iterations, seeds[ i ], self.generator, self.local_search, self.path_relining, self.instance, i, self.dict )
             self.grasps.append( g )
     
     def __start( self ):
