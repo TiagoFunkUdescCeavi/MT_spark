@@ -92,6 +92,8 @@ class RandomGreedyGen_MinMax:
         return self.select_vertice_random( score_points )
         
     def calcule_score( self, value, min, max ):
+        if max == min :
+            return 0.1
         return (value - min)/(max - min)
 
     def generate( self, vertices ):
