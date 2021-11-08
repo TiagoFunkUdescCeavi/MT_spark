@@ -17,10 +17,11 @@ class ParallelGRASP:
     def __create_grasps( self ):
         seed( self.seed )
         seeds = []
+        it = int( self.iterations / self.number_of_cpus )
         for i in range( self.number_of_cpus ):
             seeds.append( randint( 0, 100000000000000 ) )
         for i in range( self.number_of_cpus ):
-            g = GRASP( self.iterations, seeds[ i ], self.generator, self.local_search, self.path_relining, self.instance, i, self.dict )
+            g = GRASP( it, seeds[ i ], self.generator, self.local_search, self.path_relining, self.instance, i, self.dict )
             self.grasps.append( g )
     
     def __start( self ):
