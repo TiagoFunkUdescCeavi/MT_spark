@@ -8,6 +8,7 @@ from GRASP import GRASP
 from LocalSearch import LocalSearch
 from PathRelinking import PathRelinking
 import time
+from random import randint
 
 class App:
 
@@ -41,7 +42,7 @@ class App:
         self.time = time.time()
 
     def create_seed( self ):
-        seed = int( self.argument_reader.getValue( "--seed" ) )
+        seed = randint(0,100000000000)#int( self.argument_reader.getValue( "--seed" ) )
         print( "seed: " + str( seed ) )
         return seed
     

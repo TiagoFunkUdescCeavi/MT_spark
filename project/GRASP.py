@@ -57,7 +57,7 @@ class GRASP:
 
             if self.is_better( actual_solution, best_solution):
                 best_solution = actual_solution
-                print( str( i+1 ) + " " + str( best_solution.get_total_rewards() ) )
+                #print( str( i+1 ) + " " + str( best_solution.get_total_rewards() ) )
         
         return best_solution
 
