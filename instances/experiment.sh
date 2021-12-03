@@ -18,4 +18,4 @@ execute_all(){
     done
 }
 
-execute_all 30 log_2021_11_07_mono.txt
+execute_all 5 log_2021_11_12_mono.txt
