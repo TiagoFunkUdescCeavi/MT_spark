@@ -1,5 +1,6 @@
 import string
 import matplotlib.pyplot as plt
+from numpy.core.fromnumeric import mean
 import scipy.stats as stats
 
 class Instance:
@@ -78,6 +79,7 @@ def get_times( instances, filter: string ):
 def anova_all( data1, data2 ):
     fvalue, pvalue = stats.f_oneway( data1, data2 )
     print( pvalue )
+    print( str( mean( data1 ) ) + " " + str( mean( data2 ) ) )
 
 instances_mono = read( "./instances/log_2021_11_12_mono.txt" )
 instances_octa = read( "./instances/log_2021_11_07_octa.txt" )
@@ -99,4 +101,4 @@ def plot( filter: string ):
     anova_all( get_results( instances_mono, filter ), get_results( instances_octa, filter ) )
     anova_all( get_times( instances_mono, filter ), get_times( instances_octa, filter ) )
 
-plot( "p1.2.m" )
+plot( "p1.2.r" )
