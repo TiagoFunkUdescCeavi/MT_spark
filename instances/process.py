@@ -35,7 +35,7 @@ def find_or_create_instance( name: string, instances ):
     new_inst.name = name
     return new_inst
 
-def ler(arquivo):
+def read(arquivo):
     arq = open( arquivo )
     texto = arq.readlines()
     inst = Instance()
@@ -43,7 +43,6 @@ def ler(arquivo):
 
     i = 0
     while i < len( texto ):
-        #print( texto[ i ] )
         if texto[ i ].startswith("."):
             pass
         elif texto[ i ].startswith("file:"):
@@ -60,39 +59,44 @@ def ler(arquivo):
     
     return instances
 
-def get_results( instances ):
+def get_results( instances, filter: string ):
     list = []
     for i in instances:
-        for r in i.results:
-            list.append( r )
+        if i.name == filter:    
+            for r in i.results:
+                list.append( r )
     return list
 
-def get_times( instances ):
+def get_times( instances, filter: string ):
     list = []
     for i in instances:
-        for r in i.times:
-            list.append( r )
+        if i.name == filter:    
+            for r in i.times:
+                list.append( r )
     return list
 
 def anova_all( data1, data2 ):
     fvalue, pvalue = stats.f_oneway( data1, data2 )
     print( pvalue )
 
-instances_mono = ler( "./instances/log_2021_11_12_mono.txt" )
-instances_octa = ler( "./instances/log_2021_11_07_octa.txt" )
+instances_mono = read( "./instances/log_2021_11_12_mono.txt" )
+instances_octa = read( "./instances/log_2021_11_07_octa.txt" )
 
-plt.xlabel("Algoritmo")
-plt.ylabel("Qualidade da solução")
-plt.boxplot( get_results( instances_mono ), labels=["mono"], positions=[1], widths=[0.7] )
-plt.boxplot( get_results( instances_octa ), labels=["octa"], positions=[2], widths=[0.7] )
-plt.savefig( "./instances/result.png")
-plt.close()
+def plot( filter: string ):
+    plt.xlabel("Algoritmo")
+    plt.ylabel("Qualidade da solução")
+    plt.boxplot( get_results( instances_mono, filter ), labels=["mono " + filter], positions=[1], widths=[0.7] )
+    plt.boxplot( get_results( instances_octa, filter ), labels=["octa " + filter], positions=[2], widths=[0.7] )
+    plt.savefig( "./instances/result_" + filter + ".png")
+    plt.close()
 
-plt.xlabel("Algoritmo")
-plt.ylabel("Tempo (ms)")
-plt.boxplot( get_times( instances_mono ), labels=["mono"], positions=[1], widths=[0.7] )
-plt.boxplot( get_times( instances_octa ), labels=["octa"], positions=[2], widths=[0.7] )
-plt.savefig( "./instances/time.png" )
+    plt.xlabel("Algoritmo")
+    plt.ylabel("Tempo (ms)")
+    plt.boxplot( get_times( instances_mono, filter ), labels=["mono " + filter], positions=[1], widths=[0.7] )
+    plt.boxplot( get_times( instances_octa, filter ), labels=["octa " + filter], positions=[2], widths=[0.7] )
+    plt.savefig( "./instances/time_" + filter + ".png" )
 
-anova_all( get_results( instances_mono ), get_results( instances_octa ) )
-anova_all( get_times( instances_mono ), get_times( instances_octa ) )
+    anova_all( get_results( instances_mono, filter ), get_results( instances_octa, filter ) )
+    anova_all( get_times( instances_mono, filter ), get_times( instances_octa, filter ) )
+
+plot( "p1.2.m" )
