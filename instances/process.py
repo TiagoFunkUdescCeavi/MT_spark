@@ -63,7 +63,7 @@ def read(arquivo):
 def get_results( instances, filter: string ):
     list = []
     for i in instances:
-        if i.name == filter:    
+        if i.name == filter or filter == "all":    
             for r in i.results:
                 list.append( r )
     return list
@@ -71,7 +71,7 @@ def get_results( instances, filter: string ):
 def get_times( instances, filter: string ):
     list = []
     for i in instances:
-        if i.name == filter:    
+        if i.name == filter or filter == "all":
             for r in i.times:
                 list.append( r )
     return list
@@ -101,4 +101,6 @@ def plot( filter: string ):
     anova_all( get_results( instances_mono, filter ), get_results( instances_octa, filter ) )
     anova_all( get_times( instances_mono, filter ), get_times( instances_octa, filter ) )
 
-plot( "p1.2.r" )
+#plot( "p1.2.r" )
+anova_all( get_results( instances_mono, "all" ), get_results( instances_octa, "all" ) )
+anova_all( get_times( instances_mono, "all" ), get_times( instances_octa, "all" ) )
